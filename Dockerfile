@@ -122,7 +122,7 @@ COPY --from=final / /rootfs
 ARG KUBELET_VERSION
 
 WORKDIR /out
-RUN mksquashfs /rootfs kubelet_${KUBELET_VERSION#v}.raw
+RUN mksquashfs /rootfs kubelet_${KUBELET_VERSION#v}.raw -comp zstd
 
 FROM --platform=$TARGETPLATFORM scratch AS final-squashfs
 
