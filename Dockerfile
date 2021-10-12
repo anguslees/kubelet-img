@@ -76,6 +76,10 @@ RUN tar zxvf /tmp/${CRICTL_TGZ}
 
 FROM --platform=$TARGETPLATFORM debian:11.0 AS final
 
+# CRI-O needs iproute iptables.
+# Everything else is kubelet.  TODO: When everyone moves to CSI-only,
+# we can drop all the *fsprogs.
+
 RUN \
         --mount=type=cache,target=/var/cache/apt \
         --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -84,7 +88,9 @@ RUN \
         echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache; \
         apt-get update -qy; \
         apt-get install -qy --no-install-recommends \
-        systemd conntrack iproute2 iptables
+        systemd iproute2 iptables conntrack ebtables ipset kmod netbase \
+        coreutils ethtool udev socat \
+        e2fsprogs ceph-common cifs-utils xfsprogs glusterfs-client nfs-common
 
 COPY --from=crio /out /
 COPY --from=crictl /out /
