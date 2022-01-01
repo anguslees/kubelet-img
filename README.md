@@ -21,7 +21,7 @@ apt install systemd-container
 # portablectl recommends /var/lib/portables/
 mv kubelet_1.22.1.raw /var/lib/portables/
 
-portablectl attach --profile=trusted --enable --now kubelet_1.22.1.raw
+portablectl attach --profile=trusted --enable --now kubelet_1.22.1
 ```
 
 ## Is this just another containerised kubelet?
