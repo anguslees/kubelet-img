@@ -14,7 +14,7 @@ and upgraded on any base OS that uses systemd.
 Download the image for your architecture from the releases page, and
 then install using `portablectl`.
 
-```script
+```sh
 # portablectl may not be installed by default. Eg, for Debian:
 apt install systemd-container
 
@@ -61,7 +61,7 @@ downsides.
 
 This package builds using BuildKit.
 
-```script
+```sh
 docker buildx build \
     --platform=linux/amd64,linux/arm64 \
     --cache-to=type=local,dest=/tmp/buildcache \
@@ -75,7 +75,7 @@ docker buildx build \
 For debugging, just looking at the root filesystem is also
 interesting:
 
-```script
+```sh
 docker buildx build \
     --platform=linux/amd64 \
     --cache-to=type=local,dest=/tmp/buildcache \
