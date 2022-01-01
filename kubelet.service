@@ -4,26 +4,29 @@ Documentation=https://kubernetes.io/docs/home
 Requires=kubelet-crio.service
 
 [Service]
-# FIXME: move these files to /var/lib/kubelet/
-Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=%S/kubelet/kubelet.conf"
 
-Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+Environment="KUBELET_CONFIG_ARGS=--config=%S/kubelet/config.yaml"
 
-Environment="KUBELET_RUNTIME_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=/run/crio/crio.sock"
+Environment="KUBELET_RUNTIME_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix://%t/crio/crio.sock"
+
+Environment="KUBELET_PATH_ARGS=--root-dir=%S/kubelet --cert-dir=%S/kubelet/pki --lock-file=%t/lock/kubelet.lock --pod-manifest-path=%E/kubernetes/manifests --volume-plugin-dir=%S/kubelet/volumeplugins"
 
 # This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
-EnvironmentFile=-/etc/kubelet/kubeadm-flags.env
+EnvironmentFile=-%E/kubelet/kubeadm-flags.env
+EnvironmentFile=-%S/kubelet/kubeadm-flags.env
 
-ExecStart=/usr/local/bin/kubelet --cgroup-driver=systemd $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_RUNTIME_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+ExecStart=/usr/local/bin/kubelet --cgroup-driver=systemd $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_RUNTIME_ARGS $KUBELET_PATH_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
 
 ProtectSystem=strict
 RuntimeDirectory=kubelet
 StateDirectory=kubelet
-ConfigurationDirectory=kubernetes
+ConfigurationDirectory=kubernetes kubernetes/manifests
 LogsDirectory=pods containers
 BindPaths=-/run/dbus/system_bus_socket
 BindReadOnlyPaths=-/etc/ssl/certs
-TemporaryFileSystem=/opt/cni /etc/cni /var/lib/cni /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+BindReadOnlyPaths=/opt/cni /etc/cni /var/lib/cni
+BindReadOnlyPaths=-/usr/libexec/kubernetes/kubelet-plugins/volume/exec
 
 Restart=always
 StartLimitInterval=0
