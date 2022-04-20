@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.2
 
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-ARG KUBELET_VERSION=v1.23.5
+ARG KUBELET_VERSION=v1.23.6
 
 FROM --platform=$BUILDPLATFORM debian:11.2@sha256:b42494c466d101bf06038e959e2e5acd227e1251987e79528e7d8b1f4040deaf AS wget
 
