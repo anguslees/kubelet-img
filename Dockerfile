@@ -3,7 +3,7 @@
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 ARG KUBELET_VERSION=v1.23.6
 
-FROM --platform=$BUILDPLATFORM debian:11.3@sha256:6846593d7d8613e5dcc68c8f7d8b8e3179c7f3397b84a47c5b2ce989ef1075a0 AS wget
+FROM --platform=$BUILDPLATFORM debian:11.3@sha256:6137c67e2009e881526386c42ba99b3657e4f92f546814a33d35b14e60579777 AS wget
 
 RUN \
         --mount=type=cache,target=/var/cache/apt \
@@ -74,7 +74,7 @@ RUN wget ${CRICTL_URL}
 WORKDIR /out/usr/local
 RUN tar zxvf /tmp/${CRICTL_TGZ}
 
-FROM --platform=$TARGETPLATFORM debian:11.3@sha256:6846593d7d8613e5dcc68c8f7d8b8e3179c7f3397b84a47c5b2ce989ef1075a0 AS final
+FROM --platform=$TARGETPLATFORM debian:11.3@sha256:6137c67e2009e881526386c42ba99b3657e4f92f546814a33d35b14e60579777 AS final
 
 # CRI-O needs iproute iptables.
 # Everything else is kubelet.  TODO: When everyone moves to CSI-only,
@@ -105,7 +105,7 @@ RUN install -m 755 -d \
 
 COPY kubelet.service /etc/systemd/system/
 
-FROM --platform=$BUILDPLATFORM debian:11.3@sha256:6846593d7d8613e5dcc68c8f7d8b8e3179c7f3397b84a47c5b2ce989ef1075a0 AS squashfs
+FROM --platform=$BUILDPLATFORM debian:11.3@sha256:6137c67e2009e881526386c42ba99b3657e4f92f546814a33d35b14e60579777 AS squashfs
 
 RUN \
         --mount=type=cache,target=/var/cache/apt \
