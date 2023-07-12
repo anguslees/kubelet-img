@@ -36,7 +36,7 @@ FROM --platform=$BUILDPLATFORM wget AS crio
 ARG TARGETARCH
 
 # renovate: datasource=github-tags depName=cri-o/cri-o
-ENV CRIO_VERSION=v1.27.0
+ENV CRIO_VERSION=v1.27.1
 ENV CRIO_TGZ=cri-o.${TARGETARCH}.${CRIO_VERSION}.tar.gz
 ENV CRIO_URL=https://storage.googleapis.com/cri-o/artifacts/${CRIO_TGZ}
 
