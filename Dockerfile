@@ -64,7 +64,7 @@ ARG TARGETOS
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/cri-tools
-ENV CRICTL_VERSION=v1.23.0
+ENV CRICTL_VERSION=v1.30.1
 ENV CRICTL_TGZ=crictl-${CRICTL_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz
 ENV CRICTL_URL=https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VERSION}/${CRICTL_TGZ}
 
